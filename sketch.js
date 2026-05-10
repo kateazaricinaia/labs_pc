@@ -1,4 +1,6 @@
 const MODEL_ROOT = './models';
+const PROJECTILE_ORIGIN_OFFSET = { x: 42, y: -48 };
+const MAX_FRAGMENTS = 140;
 
 const models = {
   sand: null,
@@ -215,8 +217,8 @@ function drawTower() {
   const baseY = -10;
 
   const baseVisible = state.towerDamageStage < 2;
-  const middleVisible = state.towerDamageStage < 1 || random() > 0.55;
-  const topVisible = state.towerDamageStage < 1 || random() > 0.8;
+  const middleVisible = state.towerDamageStage < 2;
+  const topVisible = state.towerDamageStage < 1;
 
   if (baseVisible) {
     push();
@@ -338,7 +340,11 @@ function mousePressed() {
 
   state.shotCount += 1;
 
-  const from = createVector(state.shipPos.x + 42, waveHeight(state.shipPos.x, state.shipPos.z, state.time) - 48, state.shipPos.z);
+  const from = createVector(
+    state.shipPos.x + PROJECTILE_ORIGIN_OFFSET.x,
+    waveHeight(state.shipPos.x, state.shipPos.z, state.time) + PROJECTILE_ORIGIN_OFFSET.y,
+    state.shipPos.z
+  );
   const isSecond = state.shotCount >= 2;
   const to = isSecond
     ? createVector(state.towerPos.x, -12, state.towerPos.z)
@@ -428,8 +434,8 @@ function updateFragments() {
     return f.life > 0;
   });
 
-  if (state.fragments.length > 140) {
-    state.fragments.splice(0, state.fragments.length - 140);
+  if (state.fragments.length > MAX_FRAGMENTS) {
+    state.fragments.splice(0, state.fragments.length - MAX_FRAGMENTS);
   }
 }
 
