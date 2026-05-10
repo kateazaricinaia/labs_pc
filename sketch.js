@@ -1,4 +1,4 @@
-const MODEL_ROOT = '/home/runner/work/labs_pc/labs_pc/models';
+const MODEL_ROOT = './models';
 
 const models = {
   sand: null,
